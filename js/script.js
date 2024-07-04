@@ -3,6 +3,10 @@ const previewChartContainer = document.getElementById('preview-chart');
 let boxBackgroundColor = "#3B6772";
 let fontColor = "#FFF";
 let titleColor = "#3B6772";
+let boxBorderThick = 0;
+let boxBorderColor = "#000";
+let boxBorderRadius = "12";
+let boxCharWidth = "100";
 
 gridContainer.addEventListener("mouseleave", removeHover);
 previewChartContainer.addEventListener('input', generateHTML);
@@ -80,7 +84,10 @@ function onGridItemClick(e) {
 			let colDiv = document.createElement('div');
 			colDiv.classList.add('box-container-rounded');
 			colDiv.setAttribute('contenteditable', 'true');
-			colDiv.innerHTML = '<p>Your content here</p>'
+			colDiv.innerHTML = '<p>Your content here</p>';
+			if (boxBorderThick > 0) {
+				colDiv.classList.add('bordered');
+			}
 			rowDiv.appendChild(colDiv);
 		}
 		chartDiv.appendChild(rowDiv);
@@ -90,7 +97,7 @@ function onGridItemClick(e) {
 	document.querySelector('.inputs-container').classList.remove('hide');
 	document.querySelector('#tools-container').classList.remove('hide');
 	document.querySelector('#info-container').classList.add('hide');
-
+	
 	generateHTML();
 	generateCSS();
 }
@@ -129,11 +136,15 @@ function generateCSS() {
 
 .box-container-rounded {
   background-color: ${boxBackgroundColor};
-  border-radius: 12px;
+  border-radius: ${boxBorderRadius}px;
   padding: 10px;
   margin-right: 10px;
   flex: 1;
   color: ${fontColor};
+}
+
+.box-container-rounded.bordered {
+  border: ${boxBorderThick}px solid ${boxBorderColor};
 }
 
 .box-container-rounded h1,
@@ -202,11 +213,24 @@ function applyBoxColor(color) {
 function updateCSS() {
 	const sheet = new CSSStyleSheet();
 	sheet.replaceSync(`
+		.box-chart { width: ${boxCharWidth}%; }
 		.box-container-rounded { 
-		background-color: ${boxBackgroundColor};
-		color: ${fontColor}; 
+			border-radius: ${boxBorderRadius}px;
+			background-color: ${boxBackgroundColor};
+			color: ${fontColor}; 
+		}
+		.box-container-rounded.bordered {
+  		border: ${boxBorderThick}px solid ${boxBorderColor};
 		}
 		.box-chart > .title { color: ${titleColor}; }
+		.box-container-rounded h1,
+		.box-container-rounded h2,
+		.box-container-rounded h3,
+		.box-container-rounded h4,
+		.box-container-rounded h5,
+		.box-container-rounded h6 {
+			color: ${fontColor};
+		}
 		`);
 	document.adoptedStyleSheets = [sheet];
 	generateCSS();
@@ -230,9 +254,10 @@ function applyTitleFontColor(color) {
 function updateChartTitle(title) {
 	const boxChartContainer = document.querySelector('.box-chart');
 	if (title === '') {
-		boxChartContainer.querySelector('.box-chart .title').remove();
+		if(boxChartContainer.querySelector('.box-chart .title')){
+			boxChartContainer.querySelector('.box-chart .title').remove();
+		}
 		document.querySelector('#titleColor').classList.add('hide');
-
 	} else {
 		if (boxChartContainer.querySelector('.box-chart .title')) {
 			boxChartContainer.querySelector('.box-chart .title').innerText = title;
@@ -247,9 +272,9 @@ function updateChartTitle(title) {
 	generateHTML();
 }
 
-function updateChartCaption(caption){
+function updateChartCaption(caption) {
 	let figureElement = document.querySelector('figure');
-	if (caption === '') {
+	if (caption === '' && figureElement.querySelector('figcaption')) {
 		figureElement.querySelector('figcaption').remove();
 
 	} else {
@@ -263,6 +288,46 @@ function updateChartCaption(caption){
 		}
 	}
 	generateHTML();
+}
+
+function updateBoxChartWidth(value){
+	boxCharWidth = value;
+	document.querySelector('#box-chart-width-value').innerText = `${boxCharWidth}%`;
+	document.querySelector('.box-chart').style.width = `${boxCharWidth}%`
+	generateHTML();
+}
+
+function updateBorderThick(thick) {
+	boxBorderThick = thick;
+	const boxes = document.querySelectorAll('.box-container-rounded');
+
+	if (boxBorderThick > 0) {
+		document.querySelector('#boxBorderColor').classList.remove('hide');
+		boxes.forEach(element => {
+			element.classList.add('bordered');
+		});
+	} else {
+		document.querySelector('#boxBorderColor').classList.add('hide');
+		boxes.forEach(element => {
+			element.classList.remove('bordered');
+		});
+	}
+	document.querySelector('#box-border-thick-value').innerText = `${boxBorderThick}px`;
+	generateHTML();
+	updateCSS();
+}
+
+function applyBoxBorderColor(color) {
+	boxBorderColor = color;
+	updateCSS();
+}
+
+function updateBorderRadius(radius) {
+	boxBorderRadius = radius;
+	if (radius === ''){
+		boxBorderRadius = 0;
+	}
+	updateCSS();
 }
 
 function openTab(evt, tab) {
@@ -287,10 +352,6 @@ function copy(id) {
 	copyButton.innerHTML = '<i class="fa-solid fa-check"></i>Copied!';
 
 	setTimeout(() => {
-			copyButton.innerHTML = originalText;
+		copyButton.innerHTML = originalText;
 	}, 2000);
 };
-
-
-
-
