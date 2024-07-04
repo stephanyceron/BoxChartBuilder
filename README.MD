@@ -1,7 +1,7 @@
 # BoxChartBuilder
 
 Create accessible box chart diagrams with a WYSIWYG (What You See Is What You Get) editor that generates HTML and CSS code for use in Pressbooks.  
-[Online version](https://fanshaweoerdesign.github.io/BoxChartBuilder/)
+[Online version](https://stephanyceron.github.io/BoxChartBuilder/)
 
 ## Features
 
