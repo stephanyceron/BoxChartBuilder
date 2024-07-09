@@ -7,6 +7,10 @@ body {
   color: #723b69;
 }
 
+.overflow {
+  overflow: auto;
+}
+
 .row {
   display: flex;
   flex-direction: row;
@@ -19,7 +23,7 @@ body {
 }
 
 .hide {
-  display: none!important;
+  display: none !important;
 }
 
 .main-container {
@@ -100,6 +104,7 @@ footer a {
   ;
   background-color: #FFF;
 }
+
 .box-size-label {
   margin-top: 4px;
 }
@@ -111,6 +116,7 @@ footer a {
 
 /*** Box chart preview ***/
 .box-chart {
+  margin: 0 auto;
   margin-top: 10px;
 }
 
@@ -148,6 +154,12 @@ footer a {
 }
 
 /*** Settings and Info Container ***/
+.settings-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
 .inputs-container,
 #info-container {
   flex: 1;
@@ -159,7 +171,8 @@ footer a {
   flex-direction: column;
   justify-content: center;
 }
-#info-container h2{
+
+#info-container h2 {
   margin: 0;
 }
 
@@ -182,17 +195,13 @@ footer a {
   box-sizing: border-box;
 }
 
-.inputs-container input[type="number"]{
+.inputs-container input[type="number"] {
   width: 50px;
   box-sizing: border-box;
 }
 
 .label-fixed {
-  width: 110px;
-}
-
-.hide {
-  display: none!important;
+  width: 118px;
 }
 
 .slider {
@@ -335,6 +344,20 @@ select {
 
   .toolbar-row {
     margin-bottom: 4px;
+  }
+}
+
+@media screen and (max-width: 864px) {
+  .settings-row {
+    flex-direction: column;
+    margin-bottom: 16px;
+    gap: 0;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .toolbar {
+    align-items: flex-start;
   }
 }
 

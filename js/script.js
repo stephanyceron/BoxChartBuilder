@@ -213,7 +213,6 @@ function applyBoxColor(color) {
 function updateCSS() {
 	const sheet = new CSSStyleSheet();
 	sheet.replaceSync(`
-		.box-chart { width: ${boxCharWidth}%; }
 		.box-container-rounded { 
 			border-radius: ${boxBorderRadius}px;
 			background-color: ${boxBackgroundColor};
